@@ -1,12 +1,17 @@
 import { Button } from '@rneui/themed';
 import React, { useState } from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, Modal, StyleSheet, Text, View } from 'react-native'
 import { Slider } from 'react-native-elements';
+import { ModalComponent } from '../../Components/Modal/ModalComponent';
+import { PasswordGenerated } from '../../Components/PasswordGenerated/PasswordGenerated';
 
 var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ!@#$%^&*()+?><:{}[]";
 
 export function HomeScreen() {
     const [size, setSize] = useState<number>(3);
+    const [passwordGenerated, setPasswordGenerated] = useState<string | undefined>(undefined);
+    const [visible, setVisible] = useState<boolean>(false);
+    const onClose = () => setVisible(false);
 
     const handleOnValueChange = (value: number) => {
         const formatValue = Number(value.toFixed(0));
@@ -20,8 +25,8 @@ export function HomeScreen() {
             var randomNumber = Math.floor(Math.random() * chars.length);
             password += chars.substring(randomNumber, randomNumber + 1);
         }
-
-        console.log('password', password)
+        setPasswordGenerated(password); 
+        setVisible(true);
     }
 
     return (
@@ -47,6 +52,15 @@ export function HomeScreen() {
                     maximumTrackTintColor='#1d0a7a'
                 />
             </View>
+
+            <ModalComponent
+                title='Senha gerada'
+                onClose={onClose}
+                visible={visible}
+                titleAlign="center"
+            >
+               <PasswordGenerated onClse={onClose} password={passwordGenerated!}/>
+            </ModalComponent>
 
             <View style={style.areaButton}>
                 <Button
