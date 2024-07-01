@@ -4,9 +4,10 @@ import { StyleSheet, Text, View } from 'react-native'
 
 interface IGenericModalActionProps {
     onClose: () => void
+    onNext: () => void
 }
 
-export const GenericModalAction: React.FC<IGenericModalActionProps> = ({onClose}) => {
+export const GenericModalAction: React.FC<IGenericModalActionProps> = ({ onClose, onNext }) => {
     return (
         <View style={styles.container}>
             <Button
@@ -16,6 +17,7 @@ export const GenericModalAction: React.FC<IGenericModalActionProps> = ({onClose}
                 title={<Text style={styles.backButton}>Voltar</Text>}
             />
             <Button
+                onPress={onNext}
                 buttonStyle={[styles.button, styles.targetButton]}
                 title='Avançar'
             />

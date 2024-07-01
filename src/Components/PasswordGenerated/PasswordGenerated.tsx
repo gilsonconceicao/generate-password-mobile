@@ -1,6 +1,7 @@
 import React from 'react'
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { GenericModalAction } from '../GenericAction/GenericModalAction';
+import { useStorage } from '../../Hooks/useStorage';
 
 interface IPasswordGeneratedProps {
     password: string;
@@ -8,6 +9,20 @@ interface IPasswordGeneratedProps {
 }
 
 export const PasswordGenerated = ({ onClse, password }: IPasswordGeneratedProps) => {
+    const { readData, saveData } = useStorage();
+
+    const savePassword = async () => {
+        await saveData<string>({
+            data: password, 
+            key: "@password", 
+            onSuccess: async () => {
+                const values = await readData({key: "@password"}); 
+                console.log({"VALUES_STORAGE: ": values})
+            }
+        }); 
+
+    }
+
     return (
         <View>
             <Pressable
@@ -17,7 +32,7 @@ export const PasswordGenerated = ({ onClse, password }: IPasswordGeneratedProps)
                 <Text style={styles.password}>{password}</Text>
             </Pressable>
             <View style={styles.actionsArea}>
-                <GenericModalAction onClose={onClse}/>
+                <GenericModalAction onClose={onClse} onNext={savePassword}/>
             </View>
         </View>
     )

@@ -4,6 +4,7 @@ import { Image, Modal, StyleSheet, Text, View } from 'react-native'
 import { Slider } from 'react-native-elements';
 import { ModalComponent } from '../../Components/Modal/ModalComponent';
 import { PasswordGenerated } from '../../Components/PasswordGenerated/PasswordGenerated';
+import { useStorage } from '../../Hooks/useStorage';
 
 var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ!@#$%^&*()+?><:{}[]";
 
