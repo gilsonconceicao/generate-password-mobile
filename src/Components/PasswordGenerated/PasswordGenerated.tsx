@@ -15,10 +15,7 @@ export const PasswordGenerated = ({ onClse, password }: IPasswordGeneratedProps)
         await saveData<string>({
             data: password, 
             key: "@password", 
-            onSuccess: async () => {
-                const values = await readData({key: "@password"}); 
-                console.log({"VALUES_STORAGE: ": values})
-            }
+            onSuccess: onClse
         }); 
 
     }
