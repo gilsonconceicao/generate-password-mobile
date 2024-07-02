@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GenericModalAction } from '../GenericAction/GenericModalAction';
 import { useStorage } from '../../Hooks/useStorage';
 
@@ -9,7 +9,7 @@ interface IPasswordGeneratedProps {
 }
 
 export const PasswordGenerated = ({ onClse, password }: IPasswordGeneratedProps) => {
-    const { readData, saveData } = useStorage();
+    const { saveData } = useStorage();
 
     const savePassword = async () => {
         await saveData<string>({
@@ -17,7 +17,6 @@ export const PasswordGenerated = ({ onClse, password }: IPasswordGeneratedProps)
             key: "@password", 
             onSuccess: onClse
         }); 
-
     }
 
     return (
