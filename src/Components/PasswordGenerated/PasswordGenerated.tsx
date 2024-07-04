@@ -9,12 +9,11 @@ interface IPasswordGeneratedProps {
 }
 
 export const PasswordGenerated = ({ onClse, password }: IPasswordGeneratedProps) => {
-    const { saveData } = useStorage();
+    const { saveData } = useStorage("@password");
 
     const savePassword = async () => {
         await saveData<string>({
             data: password, 
-            key: "@password", 
             onSuccess: onClse
         }); 
     }

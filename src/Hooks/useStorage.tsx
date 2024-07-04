@@ -1,47 +1,67 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 
-type IReadDataProps = {
-    key: string
-}
-
 type ISaveDataProps<T> = {
-    data: T; 
-    onSuccess: () => void; 
-} & IReadDataProps;
+    data: T;
+    onSuccess?: () => void;
+} ;
 
-export const useStorage = (keyCustom?: string) => {
-    const [ currentValues, setCurrentValues ] = useState<string[]>([]); 
- 
+export const useStorage = (key?: string) => {
+    const [currentValues, setCurrentValues] = useState<any[]>([]);
 
     useEffect(() => {
-        if (keyCustom !== undefined) {
-            const getValues = async () => await readData({ key: keyCustom });
-            getValues().then((response) => setCurrentValues(JSON.parse(response as any) as string[]));
-        }
-    }, []);
+        const fetchData = async () => {
+            const data = await readData();
+            if (data) {
+                setCurrentValues(data);
+            }
+        };
 
-    async function saveData<T>({ data, key, onSuccess }: ISaveDataProps<T>) {
-        try { 
-            await AsyncStorage.setItem(key, JSON.stringify([...currentValues, data]) || "");
-            onSuccess();
+        fetchData();
+    }, [key]);
+
+    async function saveData<T>({ data, onSuccess }: ISaveDataProps<T>) {
+        try {
+            const currentData = await readData();
+            const newData = currentData ? [...currentData, data] : [data];
+            await AsyncStorage.setItem(key!, JSON.stringify(newData));
+            setCurrentValues(newData);
+            if (onSuccess) {
+                onSuccess();
+            }
         } catch (e) {
-            alert('Failed to save the data to the storage')
+            alert('Failed to save the input to storage');
         }
     }
 
-    async function readData({ key }: IReadDataProps) {
+    async function readData() {
         try {
-            const value = await AsyncStorage.getItem(key) || [];
-            setCurrentValues(JSON.parse(value as any) as string[]);
-            return value;
+            const data = await AsyncStorage.getItem(key!);
+            return data != null ? JSON.parse(data) : null;
         } catch (e) {
             alert('Failed to fetch the input from storage');
         }
-    };
+    }
+
+    async function removeItem(item: string) {
+        try {
+            const data = await AsyncStorage.getItem(key!);
+            if (data != null) {
+                const parsedData = JSON.parse(data);
+                const newData = parsedData.filter((i: string) => i !== item);
+                await AsyncStorage.setItem(key!, JSON.stringify(newData));
+                setCurrentValues(newData);
+            }
+        } catch (e) {
+            alert('Failed to remove the input from storage');
+        }
+    }
 
     return {
-        saveData, 
-        currentValues
+        currentValues,
+        saveData,
+        readData,
+        removeItem, 
+        setCurrentValues
     }
 }
