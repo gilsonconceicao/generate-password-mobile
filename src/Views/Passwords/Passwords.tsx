@@ -6,17 +6,27 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useFocusEffect } from '@react-navigation/native';
 
 export const Passwords = () => {
-    const { removeItem, currentValues } = useStorage("@password");
+    const { removeItem, currentValues, readData, setCurrentValues} = useStorage("@password");
    
-    console.log('currentValues', currentValues)
+    useFocusEffect(
+        useCallback(() => {
+            const fetchData = async () => {
+                const data = await readData();
+                if (data) {
+                    setCurrentValues(data);
+                }
+            };
+            fetchData();
+        }, [])
+    );
+
     if (currentValues.length === 0) {
         return <View style={style.container}></View>;
     }
 
-
     return (
         <View style={style.container}>
-            <View style={style.content}>
+            <View style={style.content}> 
                 {currentValues?.map(item => {
                     return (
                         <View style={style.item}>

@@ -56,7 +56,7 @@ export function HomeScreen() {
 
             <ModalComponent
                 title='Senha gerada'
-                onClose={onClose}
+                onClose={onClose} 
                 visible={visible}
                 titleAlign="center"
             >
