@@ -2,7 +2,7 @@
   "expo": {
     "name": "my-app",
     "slug": "my-app",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -17,9 +17,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff", 
-        "versionCode": 2
+        "backgroundColor": "#ffffff" 
       },
+      "versionCode": 2,
       "package": "com.gilsonconceicao01.generate_passowrd_app"
     },
     "web": {
