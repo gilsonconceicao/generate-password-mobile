@@ -1,14 +1,15 @@
 import { Button } from '@rneui/themed';
 import React, { useState } from 'react'
-import { Image, Modal, StyleSheet, Text, View } from 'react-native'
-import { Slider } from 'react-native-elements';
+import { Alert, Image, StyleSheet, Text, View } from 'react-native'
 import { ModalComponent } from '../../Components/Modal/ModalComponent';
 import { PasswordGenerated } from '../../Components/PasswordGenerated/PasswordGenerated';
-import { useStorage } from '../../Hooks/useStorage';
+import { chars } from '../../constants/chars';
+import { RootStackScreenDefaultProps } from '../../@types/RootStackScreenProps';
+import { SliderComponent } from '../../Components/Slider/Slider';
 
-var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ!@#$%^&*()+?><:{}[]";
+type Props = {} & RootStackScreenDefaultProps<'Home'>;
 
-export function HomeScreen() {
+export const HomeScreen: React.FC<Props> = ({}) => {
     const [size, setSize] = useState<number>(3);
     const [passwordGenerated, setPasswordGenerated] = useState<string | undefined>(undefined);
     const [visible, setVisible] = useState<boolean>(false);
@@ -21,6 +22,10 @@ export function HomeScreen() {
 
     const handleGeneratePassword = () => {
         var password = "";
+
+        if (size < 3) {
+            return Alert.alert("Não é permitido gerar senha com menos de 3 caracteres");
+        } 
 
         for (var i = 0; i < size; i++) {
             var randomNumber = Math.floor(Math.random() * chars.length);
@@ -40,17 +45,9 @@ export function HomeScreen() {
                 {size} caracteres
             </Text>
             <View style={style.contentSlider}>
-                <Slider
-                    value={size}
-                    onValueChange={handleOnValueChange}
-                    maximumValue={20}
-                    minimumValue={0}
-                    allowTouchTrack
-                    trackStyle={{ height: 8, backgroundColor: 'transparent' }}
-                    thumbStyle={{ height: 20, width: 20, backgroundColor: '#FF9800' }}
-                    thumbTintColor='red'
-                    minimumTrackTintColor='#4929ED'
-                    maximumTrackTintColor='#1d0a7a'
+                <SliderComponent
+                    size={size}
+                    handleOnValueChange={handleOnValueChange}
                 />
             </View>
 
